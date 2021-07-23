@@ -10,7 +10,7 @@ export async function getFileContent(location: string, inSrc: boolean = true) {
 	var brackets: any;
 	var d = '';
 	if (inSrc) {
-		new Promise(async (res, rej) => {
+		await new Promise(async (res, rej) => {
 			await fs.readFile(
 				path.join(_.initial(__dirname.split('\\')).toString().replace(/,/g, '/') + location),
 				async (e, data) => {
@@ -19,11 +19,12 @@ export async function getFileContent(location: string, inSrc: boolean = true) {
 						brackets = [d.includes('{'), d.includes('}'), d.includes('"')];
 						res(true);
 					} catch (e) {
-						rej(false);
+						return false;
 					}
 				}
 			);
 		});
+		return brackets[0] && brackets[1] && brackets[2] ? JSON.parse(d) : d;
 	} else {
 		await new Promise(async (res, rej) => {
 			await fs.readFile(
@@ -36,19 +37,13 @@ export async function getFileContent(location: string, inSrc: boolean = true) {
 					try {
 						d = data.toString();
 						brackets = [d.includes('{'), d.includes('}'), d.includes('"')];
+						res(true);
 					} catch (e) {
 						return false;
 					}
 				}
 			);
 		});
+		return brackets[0] && brackets[1] && brackets[0] ? JSON.parse(d) : d;
 	}
-	if (
-		(brackets[0] && brackets[1] && brackets[2]) ||
-		location.split('/')[location.length - 1].split('.')[
-			location.split('/')[location.length - 1].split('.').length - 1
-		] == 'json'
-	)
-		return JSON.parse(d);
-	else return d;
 }

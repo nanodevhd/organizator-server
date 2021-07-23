@@ -51,12 +51,24 @@ const schema = new Schema(
 
 schema.pre('save', async function (next) {
 	const t: any = this;
+	let salt;
+	let hash;
 	if (t.isModified('password')) {
-		let salt = await bcrypt.genSalt(12);
-		let hash = await bcrypt.hash(t.password, salt);
+		salt = await bcrypt.genSalt(12);
+		hash = await bcrypt.hash(t.password, salt);
 		t.password = hash;
+	}
+	if (t.isModified('pin')) {
+		salt = await bcrypt.genSalt(10);
+		hash = await bcrypt.hash(t.pin, salt);
+		t.pin = hash;
 	}
 	next();
 });
+
+schema.methods.comparePassword = async function (pass: any) {
+	const t: any = this;
+	return await bcrypt.compare(t.password, pass);
+};
 
 export default model<IUsers>('users', schema);

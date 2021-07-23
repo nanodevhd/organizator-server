@@ -1,7 +1,7 @@
 import { Document } from 'mongoose';
 
 export interface IBoards extends Document {
-	bid: string;
+	bId: string;
 	ida: string;
 	title: string;
 	configId: string;
@@ -105,4 +105,13 @@ export interface ISections extends Document {
 	ida: string;
 	sDescription: string;
 	isTable: boolean;
+}
+
+export interface ISessions extends Document {
+	sId: string;
+	ida: string;
+	inUse: boolean;
+	rId: string;
+	i: string;
+	compareI(ia: string): Promise<boolean>;
 }

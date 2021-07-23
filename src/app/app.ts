@@ -8,6 +8,7 @@ import Cors from '../security/cors.security';
 import { EventEmitter } from 'events';
 import morgan from 'morgan';
 import router from './../router/router';
+import cookieParser from 'cookie-parser';
 
 class EventsEmiter extends EventEmitter {}
 
@@ -101,7 +102,8 @@ export default class App {
 
 	private async middlewares({ pRes, pRej }: any) {
 		var count = 0;
-		var middlewaresCount = 3;
+		const time = Date.now();
+		var middlewaresCount = 4;
 		await new Promise(async (res, rej) => {
 			this.app.use(express.urlencoded({ extended: false }));
 			count++;
@@ -117,11 +119,19 @@ export default class App {
 			count++;
 			res(true);
 		});
-		if (count == middlewaresCount) pRes(true);
+		await new Promise(async (res, rej) => {
+			this.app.use(cookieParser(process.env.COOKIE_PARSER_SECRET));
+			count++;
+			res(true);
+		});
+		if (count == middlewaresCount) {
+			log('server', 'Middlewares initializated', 'start', Date.now() - time);
+			pRes(true);
+		}
 	}
 
 	private router({ pRes, pRej }: any, time: number) {
-		this.app.use(router);
+		this.app.use('/api/v1', router);
 		log('server', 'Routes initializated', 'start', Date.now() - time + 1);
 		pRes(true);
 	}

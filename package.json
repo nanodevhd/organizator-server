@@ -6,7 +6,7 @@
   "scripts": {
     "start": "",
     "start:dev": "ts-node-dev --respawn src/main.ts",
-    "test": "ts-node-dev --respawn src/utils/files.utils.ts",
+    "test": "ts-node-dev --respawn src/auth/identifires.auth.ts",
     "socket:server:test": "ts-node-dev --respawn src/socket/main.socket.ts",
     "socket:client:test": "ts-node-dev --respawn test/client.socket.ts",
     "build": ""
@@ -19,6 +19,7 @@
     "@types/body-parser": "^1.19.0",
     "@types/chalk": "^2.2.0",
     "@types/clear": "^0.1.1",
+    "@types/cookie-parser": "^1.4.2",
     "@types/cors": "^2.8.10",
     "@types/debug": "^4.1.6",
     "@types/dotenv": "^8.2.0",
@@ -45,6 +46,7 @@
     "body-parser": "^1.19.0",
     "chalk": "^4.1.1",
     "clear": "^0.1.0",
+    "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",
     "debug": "^4.3.2",
     "dotenv": "^10.0.0",

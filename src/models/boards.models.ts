@@ -3,7 +3,7 @@ import { IBoards } from '../helpers/interfaces.helpers';
 
 const schema = new Schema(
 	{
-		bid: {
+		bId: {
 			type: String,
 			required: true,
 			unique: true,
